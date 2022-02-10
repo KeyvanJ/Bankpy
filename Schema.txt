@@ -1,7 +1,9 @@
 User
 username UNIQUE CHAR(200)
 password CHAR(64)
-joined_at TIMESTAMP
+code INT(10)
+number INT(10)
+email CHAR(64)
 
 Admin
 username UNIQUE CHAR(200)
