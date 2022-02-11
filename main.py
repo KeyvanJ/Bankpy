@@ -1,3 +1,6 @@
-a = '1234'
-a = a[:-1]
-print(a)
+import Database
+
+n = input()
+while n != 'close':
+    if n == 'register':
+        print('Please enter your credentials like the following: (name,password, ')
