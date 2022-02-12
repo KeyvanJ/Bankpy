@@ -1,6 +1,8 @@
 import json
+import csv
 import pandas as pd
 import datetime
+import os
 
 class Database:
     users = []
@@ -11,27 +13,61 @@ class Database:
     # baseaccount = {'alias':'', 'password':'', 'ownercode':'', 'balance':''}
     # baseadmin = {'username':'', 'password':''}
     # baselist = {'from':'', 'to':'', 'amount':'', 'time':''}
+    def __init__(self):
+        with open('User.csv') as csvfile:
+            csvread = csv.DictReader(csvfile)
+            for row in csvread:
+                del row['']
+                self.users.append(row)
+
+        with open('List.csv') as csvfile:
+            csvread = csv.DictReader(csvfile)
+            for row in csvread:
+                del row['']
+                self.lists.append(row)
+
+        with open('Admin.csv') as csvfile:
+            csvread = csv.DictReader(csvfile)
+            for row in csvread:
+                del row['']
+                self.admins.append(row)
+
+        with open('Account.csv') as csvfile:
+            csvread = csv.DictReader(csvfile)
+            for row in csvread:
+                del row['']
+                self.accounts.append(row)
+
 
     def write(self):
+        os.remove('User.csv')
+        os.remove('User.json')
         with open('User.json', 'w') as f:
             json.dump(self.users, f)
         df = pd.read_json('User.json')
         df.to_csv('User.csv')
 
+        os.remove('Admin.json')
+        os.remove('Admin.csv')
         with open('Admin.json', 'w') as f:
             json.dump(self.admins, f)
         df = pd.read_json('Admin.json')
         df.to_csv('Admin.csv')
 
+        os.remove('List.json')
+        os.remove('List.csv')
         with open('List.json', 'w') as f:
             json.dump(self.lists, f)
         df = pd.read_json('List.json')
         df.to_csv('List.csv')
 
+        os.remove('Account.json')
+        os.remove('Account.csv')
         with open('Account.json', 'w') as f:
             json.dump(self.accounts, f)
         df = pd.read_json('Account.json')
         df.to_csv('Account.csv')
+
 
     def insert(self, string):
         stringlist = list(map(str, string.split()))
@@ -64,12 +100,13 @@ class Database:
             elif type(stringvalue[4]) is not str:
                 print('Email must only contain characters!')
             else:
-                d = {'username': stringvalue[0], 'password': stringvalue[1], 'code': stringvalue[2], 'phone': stringvalue[3], 'email': stringvalue[4]}
+                print(stringvalue)
+                d = {'username': stringvalue[0], 'password': str(stringvalue[1]), 'code': str(stringvalue[2]), 'phone': str(stringvalue[3]), 'email': stringvalue[4]}
                 self.users.append(d)
                 Database().write()
                 print('Sign Up Successful!')
         if stringlist[2] == 'Account':
-            d = {'alias': stringvalue[0], 'password': stringvalue[1], 'ownercode': stringvalue[2], 'balance': stringvalue[3]}
+            d = {'number': str(stringvalue[0]), 'alias': stringvalue[1], 'password': str(stringvalue[2]), 'ownercode': str(stringvalue[3]), 'balance': str(stringvalue[4])}
             self.accounts.append(d)
             Database().write()
             print('New Account Added!')
@@ -78,6 +115,7 @@ class Database:
             d = {'from': stringvalue[0], 'to': stringvalue[1], 'amount': stringvalue[2], 'time': ttt}
             self.lists.append(d)
             Database().write()
+
 
     def delete(self, string):
         stringlist = list(map(str, string.split()))
@@ -89,7 +127,7 @@ class Database:
                 if stringlist[5] == 'OR':
                     for i in self.users:
                         if i['username'] == f1 or i['phone'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
                 if stringlist[5] == 'AND':
                     for i in self.users:
@@ -167,6 +205,7 @@ class Database:
                             self.users.pop(i)
                             Database().write()
 
+
     def update(self, string):
         stringlist = list(map(str, string.split()))
         # print(stringlist)
@@ -176,6 +215,7 @@ class Database:
         stringadd = 'INSERT INTO ' + stringlist[1] + ' VALUES ' + stringlist[7]
         # print(stringadd)
         Database().insert(stringadd)
+
 
     def select(self, string):
         stringlist = list(map(str, string.split()))
@@ -259,12 +299,23 @@ class Database:
                 for i in self.users:
                     if i['code'] == f1 and i['password'] == f2:
                         return i
+        if stringlist[2] == 'Account':
+            print(stringlist)
+            f1 = stringlist[4][7:-2]
+            d = []
+            for i in self.accounts:
+                if i['ownercode'] == f1:
+                    d.append(i)
+            return d
+
+
 
 
 
 
 
 # Database().insert('INSERT INTO User VALUES (Ali,1234,0441026869,09396096933,ali@yahoo.com);')
-# Database().delete('DELETE FROM User WHERE username=="eminem" OR phone=="09396096933";')
+# Database().delete('DELETE FROM User WHERE username=="Ali" OR phone=="09396096933";')
 # Database().update('UPDATE User WHERE username=="eminem" OR phone=="09396096933" VALUES (Mani,5678,2970390140,09122371400,mani@yahoo.com);')
 # Database().select('SELECT FROM User WHERE code=="0441026869" AND password=="1234";'))
+# Database().select('SELECT FROM Account WHERE code=="0441026869";')

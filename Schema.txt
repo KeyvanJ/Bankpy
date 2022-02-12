@@ -2,7 +2,7 @@ User
 username UNIQUE CHAR(64)
 password CHAR(64)
 code INT(10)
-phone INT(10)
+phone INT(11)
 email CHAR(64)
 
 Admin
@@ -10,6 +10,7 @@ username UNIQUE CHAR(200)
 password CHAR(64)
 
 Account
+number INT(5)
 alias CHAR(64)
 password INT(64)
 ownercode INT(10)
