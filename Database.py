@@ -39,8 +39,10 @@ class Database:
             csvread = csv.DictReader(csvfile)
             for row in csvread:
                 del row['']
-                if row not in self.accounts:
-                    self.accounts.append(row)
+                for i in self.accounts:
+                    if row['alias'] == i['alias']:
+                        break
+                self.accounts.append(row)
 
         dydx = {'username': 'Keyvan', 'password': '3658'}
         if dydx not in self.admins:
@@ -117,7 +119,7 @@ class Database:
             Database().write()
             print('New Account Added!')
         if stringlist[2] == 'List':
-            ttt = datetime.datetime.now().time()
+            ttt = str(datetime.datetime.now().time())
             d = {'from': stringvalue[0], 'to': stringvalue[1], 'amount': stringvalue[2], 'time': ttt}
             self.lists.append(d)
             Database().write()
@@ -125,7 +127,6 @@ class Database:
 
     def delete(self, string):
         stringlist = list(map(str, string.split()))
-        #print(stringlist)
         if stringlist[2] == 'User':
             if stringlist[4][0] == 'u' and stringlist[6][0] == 'p':
                 f1 = stringlist[4][11:-1]
@@ -214,18 +215,14 @@ class Database:
 
     def update(self, string):
         stringlist = list(map(str, string.split()))
-        # print(stringlist)
         stringdel = 'DELETE FROM ' + stringlist[1] + ' WHERE ' + stringlist[3] + ' ' + stringlist[4] + ' ' + stringlist[5] + ';'
-        # print(stringdel)
         Database().delete(stringdel)
         stringadd = 'INSERT INTO ' + stringlist[1] + ' VALUES ' + stringlist[7]
-        # print(stringadd)
         Database().insert(stringadd)
 
 
     def select(self, string):
         stringlist = list(map(str, string.split()))
-        # print(stringlist)
         if stringlist[2] == 'User':
             if stringlist[4][0] == 'u' and stringlist[6][0] == 'p':
                 f1 = stringlist[4][11:-1]
@@ -326,15 +323,3 @@ class Database:
                 if i['from'] == f1 or i['to'] == f1:
                     d.append(i)
             return d
-
-
-
-
-
-
-# Database().insert('INSERT INTO User VALUES (Ali,1234,0441026869,09396096933,ali@yahoo.com);')
-# Database().delete('DELETE FROM User WHERE username=="Ali" OR phone=="09396096933";')
-# Database().update('UPDATE User WHERE username=="eminem" OR phone=="09396096933" VALUES (Mani,5678,2970390140,09122371400,mani@yahoo.com);')
-# Database().select('SELECT FROM User WHERE code=="0441026869" AND password=="1234";'))
-# Database().select('SELECT FROM Account WHERE code=="0441026869";')
-# print(Database.users)

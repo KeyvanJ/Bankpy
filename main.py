@@ -5,6 +5,16 @@ while True:
     if n == 'close':
         break
 
+    print('Enter one of the commands below:\n'
+          'register\n'
+          'login\n'
+          'add account\n'
+          'show accounts\n'
+          'transfer\n'
+          'transactions\n'
+          'pay bills\n'
+          'admin login\n')
+    
     # New Account Sign up
     if n == 'register':
         print('Please enter your name:')
@@ -50,7 +60,6 @@ while True:
         info = '(' + n1 + ',' + a1 + ',' + p2 + ',' + c1 + ',' + b1 + ');'
         command = 'INSERT INTO Account VALUES ' + info
         Database.Database().insert(command)
-        print('Account added!')
 
     # Accounts Display
     if n == 'show accounts':
@@ -188,10 +197,10 @@ while True:
                     acc = Database.Database().select(command)
                     print('Please enter the new balance of the account:')
                     nb = input()
-                    
-
-
 
         else:
             print('Login failed.')
 
+
+    else:
+        print('Command could not be recognized!')
