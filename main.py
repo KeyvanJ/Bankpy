@@ -155,6 +155,42 @@ while True:
                 if m == 'close panel':
                     break
 
+                # Viewing All Users
+                if m == 'list users':
+                    print('Information of all Users:')
+                    l = Database.Database.users
+                    for i in l:
+                        print('User with name ', i['username'], ' and Code ', i['code'], ' .Their phone number is ', i['phone'], ' and their email is ', i['email'])
+
+                if m == 'edit info':
+                    print('Please enter the username of the user you want to edit:')
+                    sub = input()
+                    command = 'SELECT FROM User WHERE username=="' + sub + '";'
+                    acc = Database.Database().select(command)
+                    print('Please enter the new username:')
+                    n2 = str(input())
+                    print('Please enter the new password:')
+                    p2 = str(input())
+                    print('Please enter the new code:')
+                    c2 = "'" + str(input()) + "'"
+                    print('Please enter the new phone number:')
+                    pn = "'" + str(input()) + "'"
+                    print('Please enter the new email:')
+                    e1 = str(input())
+                    info = '(' + n2 + ',' + p2 + ',' + c2 + ',' + pn + ',' + e1 + ')'
+                    command = 'UPDATE User WHERE username=="' + acc['username'] + '" AND phone=="' + acc['phone'] + '" VALUES ' + info
+                    Database.Database().update(command)
+
+                if m == 'edit balance':
+                    print('Please enter the account number of the account you want to edit:')
+                    sub = input()
+                    command = 'SELECT FROM Account WHERE number=="' + sub + '";'
+                    acc = Database.Database().select(command)
+                    print('Please enter the new balance of the account:')
+                    nb = input()
+                    
+
+
 
         else:
             print('Login failed.')
