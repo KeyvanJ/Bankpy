@@ -5,7 +5,7 @@ for i in range(len(a)):
 p = 0
 for i in range(len(a)):
     if a[i] != '':
-        k = open('%s.txt' % a[p], 'a+')
+        k = open('%s.csv' % a[p], 'a+')
         if i != p:
             tmp = list(map(str, a[i].split()))
             k.write(tmp[0])

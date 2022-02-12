@@ -1,11 +1,22 @@
 User
-username UNIQUE CHAR(200)
+username UNIQUE CHAR(64)
 password CHAR(64)
 code INT(10)
-number INT(10)
+phone INT(10)
 email CHAR(64)
 
 Admin
 username UNIQUE CHAR(200)
 password CHAR(64)
-joined_at TIMESTAMP
+
+Account
+alias CHAR(64)
+password INT(64)
+ownercode INT(10)
+balance INT(64)
+
+List
+from INT(64)
+to INT(64)
+amount INT(64)
+time CHAR(64)
