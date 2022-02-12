@@ -6,6 +6,7 @@ p = 0
 for i in range(len(a)):
     if a[i] != '':
         k = open('%s.csv' % a[p], 'a+')
+        m = open('%s.json' % a[p], 'a+')
         if i != p:
             tmp = list(map(str, a[i].split()))
             k.write(tmp[0])

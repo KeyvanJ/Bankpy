@@ -18,26 +18,33 @@ class Database:
             csvread = csv.DictReader(csvfile)
             for row in csvread:
                 del row['']
-                self.users.append(row)
+                if row not in self.users:
+                    self.users.append(row)
 
         with open('List.csv') as csvfile:
             csvread = csv.DictReader(csvfile)
             for row in csvread:
                 del row['']
-                self.lists.append(row)
+                if row not in self.lists:
+                    self.lists.append(row)
 
         with open('Admin.csv') as csvfile:
             csvread = csv.DictReader(csvfile)
             for row in csvread:
                 del row['']
-                self.admins.append(row)
+                if row not in self.admins:
+                    self.admins.append(row)
 
         with open('Account.csv') as csvfile:
             csvread = csv.DictReader(csvfile)
             for row in csvread:
                 del row['']
-                self.accounts.append(row)
+                if row not in self.accounts:
+                    self.accounts.append(row)
 
+        dydx = {'username': 'Keyvan', 'password': '3658'}
+        if dydx not in self.admins:
+            self.admins.append(dydx)
 
     def write(self):
         os.remove('User.csv')
@@ -89,10 +96,10 @@ class Database:
             elif type(stringvalue[1]) is not str:
                 print('Password must only contain characters!')
             # Code e Melli check
-            elif len(stringvalue[2]) > 10 or type(stringvalue[2]) is not str:
+            elif len(stringvalue[2]) > 12 or type(stringvalue[2]) is not str:
                 print('Code e Melli is not Correct!')
             # Phone Check
-            elif len(stringvalue[3]) > 11 or type(stringvalue[3]) is not str:
+            elif len(stringvalue[3]) > 13 or type(stringvalue[3]) is not str:
                 print('Phone Number is not Correct!')
             # Email Check
             elif len(stringvalue[4]) > 64:
@@ -100,7 +107,6 @@ class Database:
             elif type(stringvalue[4]) is not str:
                 print('Email must only contain characters!')
             else:
-                print(stringvalue)
                 d = {'username': stringvalue[0], 'password': str(stringvalue[1]), 'code': str(stringvalue[2]), 'phone': str(stringvalue[3]), 'email': stringvalue[4]}
                 self.users.append(d)
                 Database().write()
@@ -132,7 +138,7 @@ class Database:
                 if stringlist[5] == 'AND':
                     for i in self.users:
                         if i['username'] == f1 or i['phone'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
 
             if stringlist[6][0] == 'u' and stringlist[4][0] == 'p':
@@ -141,12 +147,12 @@ class Database:
                 if stringlist[5] == 'OR':
                     for i in self.users:
                         if i['username'] == f1 or i['phone'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
                 if stringlist[5] == 'AND':
                     for i in self.users:
                         if i['username'] == f1 or i['phone'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
 
             if stringlist[4][0] == 'u' and stringlist[6][0] == 'c':
@@ -155,12 +161,12 @@ class Database:
                 if stringlist[5] == 'OR':
                     for i in self.users:
                         if i['username'] == f1 or i['code'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
                 if stringlist[5] == 'AND':
                     for i in self.users:
                         if i['username'] == f1 or i['code'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
 
             if stringlist[6][0] == 'u' and stringlist[4][0] == 'c':
@@ -169,12 +175,12 @@ class Database:
                 if stringlist[5] == 'OR':
                     for i in self.users:
                         if i['username'] == f1 or i['code'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
                 if stringlist[5] == 'AND':
                     for i in self.users:
                         if i['username'] == f1 or i['code'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
 
             if stringlist[4][0] == 'u' and stringlist[6][0] == 'e':
@@ -183,12 +189,12 @@ class Database:
                 if stringlist[5] == 'OR':
                     for i in self.users:
                         if i['username'] == f1 or i['email'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
                 if stringlist[5] == 'AND':
                     for i in self.users:
                         if i['username'] == f1 or i['email'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
 
             if stringlist[6][0] == 'u' and stringlist[4][0] == 'e':
@@ -197,12 +203,12 @@ class Database:
                 if stringlist[5] == 'OR':
                     for i in self.users:
                         if i['username'] == f1 or i['email'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
                 if stringlist[5] == 'AND':
                     for i in self.users:
                         if i['username'] == f1 or i['email'] == f2:
-                            self.users.pop(i)
+                            self.users.remove(i)
                             Database().write()
 
 
@@ -300,14 +306,26 @@ class Database:
                     if i['code'] == f1 and i['password'] == f2:
                         return i
         if stringlist[2] == 'Account':
-            print(stringlist)
-            f1 = stringlist[4][7:-2]
+            if stringlist[4][0] == 'c':
+                f1 = stringlist[4][7:-2]
+                d = []
+                for i in self.accounts:
+                    if i['ownercode'] == f1:
+                        d.append(i)
+                return d
+            if stringlist[4][0] == 'n':
+                f1 = stringlist[4][9:-2]
+                for i in self.accounts:
+                    if i['number'] == f1:
+                        return i
+
+        if stringlist[2] == 'List':
+            f1 = stringlist[4][9:-2]
             d = []
-            for i in self.accounts:
-                if i['ownercode'] == f1:
+            for i in self.lists:
+                if i['from'] == f1 or i['to'] == f1:
                     d.append(i)
             return d
-
 
 
 
@@ -319,3 +337,4 @@ class Database:
 # Database().update('UPDATE User WHERE username=="eminem" OR phone=="09396096933" VALUES (Mani,5678,2970390140,09122371400,mani@yahoo.com);')
 # Database().select('SELECT FROM User WHERE code=="0441026869" AND password=="1234";'))
 # Database().select('SELECT FROM Account WHERE code=="0441026869";')
+# print(Database.users)
